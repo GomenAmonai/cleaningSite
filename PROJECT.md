@@ -27,3 +27,7 @@
 8. Contact form + контакты
 9. Footer
 
+## Sanity 
+
+1. Project ID - v4ls0ftn
+2. Organization ID - o2GNJFowa
