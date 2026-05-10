@@ -31,3 +31,19 @@
 
 1. Project ID - v4ls0ftn
 2. Organization ID - o2GNJFowa
+
+
+## Status (10 may 2026)
+
+Done:
+- Sanity Studio embedded at /studio
+- Schemas: siteSettings, service
+- Home page renders services from Sanity (server-side fetch)
+
+Next:
+- Hero section (заголовок, подзаголовок, CTA, фоновое фото) — schema or part of siteSettings
+- Advantages schema (преимущества, как 5-я страница PDF референса)
+- Stats schema (опционально)
+- Image rendering through Sanity image URL builder
+- Singleton fix for siteSettings (отложено)
+- Header + Footer using siteSettings data
