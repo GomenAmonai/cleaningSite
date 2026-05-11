@@ -10,37 +10,41 @@ type HeroProps = {
 
 export function Hero({ title, subtitle, image, ctaText }: HeroProps) {
     return (
-        <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
-            {image && (
-                <div className="absolute inset-0 z-0">
-                    <Image
-                        src={urlFor(image).width(1920).height(1080).url()}
-                        alt=""
-                        fill
-                        priority
-                        className="object-cover"
-                        sizes="100vw"
-                    />
-                    <div className="absolute inset-0 bg-black/50" />
-                </div>
-            )}
-            <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                    {title}
-                </h1>
-                {subtitle && (
-                    <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                        {subtitle}
-                    </p>
-                )}
-                {ctaText && (
-                    <a
-                        href="#contact"
-                        className="inline-block bg-white text-black font-semibold px-8 py-4 rounded-lg hover:bg-zinc-200 transition-colors"
-                    >
+        <section className="relative bg-background overflow-hidden">
+            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    <div className="order-2 lg:order-1">
+                        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium text-foreground leading-[1.1] tracking-tight mb-8">
+                            {title}
+                        </h1>
+                        {subtitle && (
+                            <p className="text-lg sm:text-xl text-muted leading-relaxed mb-10 max-w-xl">
+                                {subtitle}
+                            </p>
+                        )}
+                        {ctaText && (
+                            <a
+                            href="#contact"
+                            className="inline-block bg-accent text-white font-medium px-8 py-4 rounded-lg hover:bg-accent-hover transition-colors"
+                            >
                         {ctaText}
-                    </a>
-                )}
+                            </a>
+                            )}
+                    </div>
+
+                    {image && (
+                        <div className="order-1 lg:order-2 relative aspect-[4/5] lg:aspect-square rounded-2xl overflow-hidden">
+                            <Image
+                                src={urlFor(image).width(1200).height(1500).url()}
+                                alt=""
+                                fill
+                                priority
+                                className="object-cover"
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
         </section>
     );

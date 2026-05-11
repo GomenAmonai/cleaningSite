@@ -70,7 +70,80 @@ export const siteSettings = defineType({
             description: 'Что написано на кнопке. Пример: «Получить расчёт»',
             initialValue: 'Связаться',
         }),
+        defineField({
+            name: 'whyUsTitle',
+            title: 'Почему мы — Заголовок секции',
+            type: 'string',
+            initialValue: 'Почему выбирают нас',
+        }),
+        defineField({
+            name: 'whyUsItems',
+            title: 'Почему мы — Пункты',
+            type: 'array',
+            description: 'Рекомендуется 4 пункта',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        defineField({
+                            name: 'title',
+                            title: 'Заголовок пункта',
+                            type: 'string',
+                            validation: (Rule) => Rule.required().max(60),
+                        }),
+                        defineField({
+                            name: 'description',
+                            title: 'Описание',
+                            type: 'text',
+                            rows: 3,
+                            validation: (Rule) => Rule.required().max(200),
+                        }),
+                    ],
+                    preview: {
+                        select: { title: 'title' },
+                    },
+                },
+            ],
+            validation: (Rule) => Rule.max(6),
+        }),
+        defineField({
+            name: 'faqTitle',
+            title: 'FAQ — Заголовок секции',
+            type: 'string',
+            initialValue: 'Частые вопросы',
+        }),
+        defineField({
+            name: 'faqItems',
+            title: 'FAQ — Вопросы',
+            type: 'array',
+            description: 'Рекомендуется 5-7 вопросов',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        defineField({
+                            name: 'question',
+                            title: 'Вопрос',
+                            type: 'string',
+                            validation: (Rule) => Rule.required().max(150),
+                        }),
+                        defineField({
+                            name: 'answer',
+                            title: 'Ответ',
+                            type: 'text',
+                            rows: 4,
+                            validation: (Rule) => Rule.required().max(500),
+                        }),
+                    ],
+                    preview: {
+                        select: { title: 'question' },
+                    },
+                },
+            ],
+            validation: (Rule) => Rule.max(10),
+        }),
     ],
+
     preview : {
         prepare : () => ({
             title : 'Настройки сайта',
