@@ -41,6 +41,35 @@ export const siteSettings = defineType({
             title : 'Telegram',
             type : 'url',
         }),
+        defineField({
+            name: 'heroTitle',
+            title: 'Hero — Заголовок',
+            type: 'string',
+            description: 'Большой заголовок на первом экране. Пример: «Профессиональный клининг для организаций»',
+            validation: (Rule) => Rule.required().max(100),
+        }),
+        defineField({
+            name: 'heroSubtitle',
+            title: 'Hero — Подзаголовок',
+            type: 'text',
+            rows: 2,
+            description: 'Одно предложение под заголовком',
+            validation: (Rule) => Rule.max(200),
+        }),
+        defineField({
+            name: 'heroImage',
+            title: 'Hero — Фоновое изображение',
+            type: 'image',
+            options: { hotspot: true },
+            description: 'Большое фото на первом экране',
+        }),
+        defineField({
+            name: 'heroCtaText',
+            title: 'Hero — Текст кнопки',
+            type: 'string',
+            description: 'Что написано на кнопке. Пример: «Получить расчёт»',
+            initialValue: 'Связаться',
+        }),
     ],
     preview : {
         prepare : () => ({
