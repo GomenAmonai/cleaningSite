@@ -29,9 +29,7 @@
 @utility border-border { border-color: var(--border); }
 @utility border-accent { border-color: var(--accent); }
 
-@utility hover\:bg-accent-hover {
-    &:hover { background-color: var(--accent-hover); }
-}
+
 
 body {
     background: var(--background);
