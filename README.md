@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# cleaning-site
 
-## Getting Started
+Лендинг для B2B-клининговой компании. Next.js 16 + Sanity v4 + Tailwind 4.
 
-First, run the development server:
+## Стек
+
+- **Next.js 16** (App Router, React Server Components)
+- **Sanity v4** — headless CMS, встроена в Next через `/studio`
+- **Tailwind 4** — стили через `@theme` и `@utility` в `globals.css`
+- **TypeScript**
+- **next/font** — Manrope (sans), Lora (serif), оба с поддержкой кириллицы
+
+## Структура
+app/
+components/      # Hero, Header, WhyUs, Faq, Contact, Footer
+studio/          # Sanity Studio (доступна по /studio)
+globals.css      # дизайн-токены, утилиты
+layout.tsx       # шрифты, метаданные
+page.tsx         # главная — собирает все секции
+sanity/
+lib/             # клиент, image helper
+schemaTypes/
+siteSettings.ts  # синглтон со всеми текстами/настройками
+service.ts       # услуги
+
+## Дизайн-система
+
+Палитра (в `globals.css` как CSS-переменные):
+
+- `--background` `#FAFAF7` — основной фон (off-white)
+- `--foreground` `#1A1A1A` — текст (графит)
+- `--accent` `#1E2A3A` — акцент, CTA-кнопки (чернильный синий)
+- `--gold` `#C9A961` — вторичный акцент (охра, цифры/детали)
+- `--muted` `#6B6B6B` — приглушённый текст
+- `--border` `#E8E6DE` — рамки
+- `--surface` `#FFFFFF` — карточки, шапка
+
+Шрифты:
+
+- **Manrope** — основной текст, кнопки, навигация
+- **Lora** — заголовки секций, цифры в WhyUs, телефон в контактах
+
+Принцип: 75% фон + текст, 20% чернильный синий, 5% охра.
+
+## Локальный запуск
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Сайт — http://localhost:3000
+Sanity Studio — http://localhost:3000/studio
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Переменные окружения
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+В `.env.local`:
+NEXT_PUBLIC_SANITY_PROJECT_ID=<id из sanity.io/manage>
+NEXT_PUBLIC_SANITY_DATASET=production
 
-## Learn More
+## Контент
 
-To learn more about Next.js, take a look at the following resources:
+Весь редактируемый контент — в Sanity Studio (`/studio`):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Настройки сайта** (синглтон): название компании, телефон, адрес, часы, мессенджеры, тексты Hero/WhyUs/FAQ
+- **Услуги**: карточки с фото, заголовком, описанием, порядком сортировки
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Изменения публикуются мгновенно — Next.js перевалидирует кэш на каждый запрос (RSC + fetch).
 
-## Deploy on Vercel
+## Деплой
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Проект задеплоен на Vercel. Push в `main` → автоматическая сборка.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## TODO
+
+- [ ] Форма заявки (сейчас только звонок/мессенджеры)
+- [ ] Логотип
+- [ ] Реальные фото команды
+- [ ] SEO: og:image, sitemap, robots.txt
+- [ ] Аналитика (Я.Метрика)
