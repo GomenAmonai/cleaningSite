@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
     Building2,
     Droplets,
@@ -34,6 +35,7 @@ type DisplayService = {
     icon: LucideIcon;
     title: string;
     description: string;
+    slug?: string;
 };
 
 // TODO: final copy from client — used only when Sanity returns no services
@@ -110,6 +112,7 @@ export function Services({ title, subtitle, services }: Props) {
                   icon: ICON_MAP[s.icon] ?? HelpCircle,
                   title: s.title,
                   description: s.description ?? "",
+                  slug: s.slug,
               }))
             : FALLBACK_SERVICES;
 
@@ -127,25 +130,34 @@ export function Services({ title, subtitle, services }: Props) {
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8">
-                    {display.map(({ key, icon: Icon, title, description }) => (
-                        <article
-                            key={key}
-                            className="p-6 md:p-8 bg-white border border-ink/10 rounded-lg hover:border-cyan transition-colors"
-                        >
-                            <Icon
-                                className="text-cyan"
-                                size={44}
-                                strokeWidth={1.5}
-                                aria-hidden="true"
-                            />
-                            <h3 className="mt-5 text-lg font-semibold text-ink">
-                                {title}
-                            </h3>
-                            <p className="mt-2 text-sm text-ink/70 leading-relaxed">
-                                {description}
-                            </p>
-                        </article>
-                    ))}
+                    {display.map(({ key, icon: Icon, title, description, slug }) => {
+                        const inner = (
+                            <>
+                                <Icon
+                                    className="text-cyan"
+                                    size={44}
+                                    strokeWidth={1.5}
+                                    aria-hidden="true"
+                                />
+                                <h3 className="mt-5 text-lg font-semibold text-ink">
+                                    {title}
+                                </h3>
+                                <p className="mt-2 text-sm text-ink/70 leading-relaxed">
+                                    {description}
+                                </p>
+                            </>
+                        );
+                        const cardClass = "p-6 md:p-8 bg-white border border-ink/10 rounded-lg hover:border-cyan transition-colors block";
+                        return slug ? (
+                            <Link key={key} href={`/services/${slug}`} className={cardClass}>
+                                {inner}
+                            </Link>
+                        ) : (
+                            <article key={key} className={cardClass}>
+                                {inner}
+                            </article>
+                        );
+                    })}
                 </div>
             </div>
         </section>
