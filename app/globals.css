@@ -1,40 +1,18 @@
 @import "tailwindcss";
 
-:root {
-    --background: #FAFAF7;
-    --foreground: #1A1A1A;
-    --muted: #6B6B6B;
-    --accent: #1E2A3A;
-    --accent-hover: #2A3A50;
-    --gold: #C9A961;
-    --border: #E8E6DE;
-    --surface: #FFFFFF;
+@theme {
+    --color-cyan: #0891B2;
+    --color-cyan-light: #ECFEFF;
+    --color-ink: #1A1A1A;
+    --color-white: #FFFFFF;
+
+    --font-sans: var(--font-manrope), system-ui, sans-serif;
 }
-
-@theme inline {
-    --font-sans: var(--font-inter);
-    --font-serif: var(--font-fraunces);
-}
-
-@utility bg-background { background-color: var(--background); }
-@utility bg-surface { background-color: var(--surface); }
-@utility bg-accent { background-color: var(--accent); }
-@utility bg-gold { background-color: var(--gold); }
-
-@utility text-foreground { color: var(--foreground); }
-@utility text-muted { color: var(--muted); }
-@utility text-accent { color: var(--accent); }
-@utility text-gold { color: var(--gold); }
-
-@utility border-border { border-color: var(--border); }
-@utility border-accent { border-color: var(--accent); }
-
-
 
 body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: var(--font-inter), system-ui, sans-serif;
+    background: #FFFFFF;
+    color: var(--color-ink);
+    font-family: var(--font-manrope), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
