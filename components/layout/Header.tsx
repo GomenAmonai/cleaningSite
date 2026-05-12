@@ -9,7 +9,7 @@ const NAV_ITEMS = [
     { label: "Преимущества", href: "#why-us" },
     { label: "Отзывы", href: "#reviews" },
     { label: "FAQ", href: "#faq" },
-    { label: "Контакты", href: "#contacts" },
+    { label: "Контакты", href: "#contact" },
 ];
 
 const PHONE_PLACEHOLDER = "+7 (XXX) XXX-XX-XX";

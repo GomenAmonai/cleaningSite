@@ -9,6 +9,14 @@
     --font-sans: var(--font-manrope), system-ui, sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+section[id] {
+    scroll-margin-top: 80px;
+}
+
 body {
     background: #FFFFFF;
     color: var(--color-ink);
