@@ -1,3 +1,7 @@
+"use client";
+
+import { useContactModal } from "@/components/providers/ModalProvider";
+
 type Props = {
     title?: string;
     subtitle?: string;
@@ -5,6 +9,8 @@ type Props = {
 };
 
 export function Hero({ title, subtitle, ctaLabel }: Props) {
+    const { openContactModal } = useContactModal();
+
     return (
         <section
             id="hero"
@@ -31,13 +37,14 @@ export function Hero({ title, subtitle, ctaLabel }: Props) {
                     </p>
 
                     <div className="mt-10">
-                        <a
-                            href="#contact"
+                        <button
+                            type="button"
+                            onClick={openContactModal}
                             className="inline-flex items-center justify-center bg-cyan hover:bg-cyan/85 text-white font-semibold px-8 py-4 rounded-md transition-colors"
                         >
                             {/* TODO: final copy from client (fallback below) */}
                             {ctaLabel ?? "Оставить заявку"}
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
