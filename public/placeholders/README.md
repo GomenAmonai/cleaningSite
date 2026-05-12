@@ -2,12 +2,12 @@
 
 Drop production-ready images here, then reference them as `/placeholders/<filename>` from the site.
 
-| File | Used in | Notes |
-| --- | --- | --- |
-| `hero.jpg` | Hero section background / illustration | Wide aspect (≥ 1920×1080), bright, on-brand cleaning scene |
-| `about-1.jpg` | About section — image 1 of 4 | Square or 4:3, team / process shot |
-| `about-2.jpg` | About section — image 2 of 4 | Square or 4:3, equipment / detail |
-| `about-3.jpg` | About section — image 3 of 4 | Square or 4:3, before/after or result |
-| `about-4.jpg` | About section — image 4 of 4 | Square or 4:3, complementary scene |
+| File | Used in | Recommended size | Notes |
+| --- | --- | --- | --- |
+| `hero.jpg` | Hero section full-bleed background | 1920×1080 min, landscape | Bright, on-brand cleaning scene. Replaces the dark `bg-ink` placeholder in `components/sections/Hero.tsx`. |
+| `about-1.jpg` | About carousel slide 1 (`Опыт работы`) | 800×600, landscape | Team / process shot. |
+| `about-2.jpg` | About carousel slide 2 (`Современное оборудование`) | 800×600, landscape | Equipment / detail. |
+| `about-3.jpg` | About carousel slide 3 (`Гибкий график`) | 800×600, landscape | Work in progress / time-of-day cue. |
+| `about-4.jpg` | About carousel slide 4 (`Договор и отчётность`) | 800×600, landscape | Documents / handshake / office. |
 
-Replace any of these with the real asset under the same filename to swap content without code changes.
+Until real assets land, the components render solid coloured fallback `<div>`s with `TODO: replace with next/image` comments — grep for `TODO: replace with next/image` to find every spot that needs swapping once the JPGs exist.
