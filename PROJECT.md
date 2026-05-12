@@ -80,6 +80,28 @@ Sanity — grep `TODO: final copy from client` for swap points.
   background `bg-cyan-light`. Image slots are coloured placeholder
   divs with TODO comments.
 
+### Block 4 — Clients + Reviews + FAQ + nav anchors
+- `components/sections/Clients.tsx`: empty-state placeholder on white,
+  dashed border container, lucide `Users` icon. Real logos arrive via
+  Sanity in block 5.
+- `components/sections/Reviews.tsx`: empty-state placeholder on
+  `bg-cyan-light`, dashed border + `MessageSquareQuote` icon. Real
+  reviews arrive via Sanity in block 5.
+- `components/sections/FAQ.tsx`: native `<details>/<summary>`
+  accordion, 6 hard-coded items, rotating cyan `+` button via
+  `group-open:rotate-45`. No JS, no extra deps.
+- `app/globals.css`: `html { scroll-behavior: smooth }` and
+  `section[id] { scroll-margin-top: 80px }` so Header anchor links
+  land below the sticky bar.
+- `components/layout/Header.tsx`: only change is `Контакты` href —
+  `#contacts` → `#contact` to match Hero CTA / future contact section.
+  Other hrefs were already aligned with existing section IDs.
+
+Section IDs in use: `hero`, `about`, `services`, `why-us`, `clients`,
+`reviews`, `faq`. (Spec called for `home` / `why` — kept existing
+`hero` / `why-us` IDs because Hero and WhyUs markup is frozen; Header
+hrefs point at the real IDs.)
+
 ### Block 3 — Services + WhyUs
 - `components/ui/SectionHeading.tsx`: shared heading (cyan accent line
   + title + optional subtitle), `tone="dark"` variant for use on
@@ -93,8 +115,8 @@ Sanity — grep `TODO: final copy from client` for swap points.
   bodies, semi-transparent `bg-white/5` cards.
 
 ### Current page order
-`Header → Hero → About → Services → WhyUs → Footer`. Remaining
-sections (Clients, Reviews, FAQ, Contact) come in later blocks.
+`Header → Hero → About → Services → WhyUs → Clients → Reviews → FAQ → Footer`.
+Contact section comes in block 5 (Sanity wiring).
 
 ### Dependencies added during v2
 - `embla-carousel-react` — About carousel
