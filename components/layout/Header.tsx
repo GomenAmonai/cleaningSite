@@ -12,11 +12,20 @@ const NAV_ITEMS = [
     { label: "Контакты", href: "#contact" },
 ];
 
-const PHONE_PLACEHOLDER = "+7 (XXX) XXX-XX-XX";
-const COMPANY_NAME_PLACEHOLDER = "Название компании";
+const COMPANY_FALLBACK = "Название компании";
+const PHONE_FALLBACK = "+7 (XXX) XXX-XX-XX";
 
-export function Header() {
+type Props = {
+    companyName?: string;
+    phone?: string;
+};
+
+export function Header({ companyName, phone }: Props) {
     const [open, setOpen] = useState(false);
+
+    const displayCompany = companyName ?? COMPANY_FALLBACK;
+    const displayPhone = phone ?? PHONE_FALLBACK;
+    const telHref = `tel:${displayPhone.replace(/[^+\d]/g, "")}`;
 
     return (
         <header className="sticky top-0 z-50 bg-white border-b border-black/5">
@@ -25,7 +34,7 @@ export function Header() {
                     href="#hero"
                     className="font-semibold text-lg text-ink shrink-0"
                 >
-                    {COMPANY_NAME_PLACEHOLDER}
+                    {displayCompany}
                 </a>
 
                 <nav className="hidden lg:flex items-center gap-6 text-sm font-medium">
@@ -41,10 +50,10 @@ export function Header() {
                 </nav>
 
                 <a
-                    href={`tel:${PHONE_PLACEHOLDER.replace(/[^+\d]/g, "")}`}
+                    href={telHref}
                     className="hidden md:inline-flex font-semibold text-ink hover:text-cyan transition-colors"
                 >
-                    {PHONE_PLACEHOLDER}
+                    {displayPhone}
                 </a>
 
                 <button
@@ -96,10 +105,10 @@ export function Header() {
                             </a>
                         ))}
                         <a
-                            href={`tel:${PHONE_PLACEHOLDER.replace(/[^+\d]/g, "")}`}
+                            href={telHref}
                             className="md:hidden font-semibold text-ink mt-2"
                         >
-                            {PHONE_PLACEHOLDER}
+                            {displayPhone}
                         </a>
                     </nav>
                 </div>

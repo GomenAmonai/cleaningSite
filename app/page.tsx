@@ -48,7 +48,10 @@ export default async function Home() {
 
     return (
         <>
-            <Header />
+            <Header
+                companyName={settings?.companyName}
+                phone={settings?.phone}
+            />
             <main className="flex-1">
                 <Hero
                     title={settings?.heroTitle}
@@ -80,7 +83,10 @@ export default async function Home() {
                     items={faqItems ?? undefined}
                 />
             </main>
-            <Footer />
+            <Footer
+                settings={settings ?? undefined}
+                services={services ?? undefined}
+            />
         </>
     );
 }

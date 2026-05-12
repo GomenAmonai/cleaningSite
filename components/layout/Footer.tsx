@@ -1,11 +1,7 @@
-const CONTACT_ITEMS = [
-    "+7 (XXX) XXX-XX-XX",
-    "info@example.com",
-    "г. Москва, ул. Примерная, д. 1",
-    "Пн–Вс: 9:00–21:00",
-];
+import type { Service, SiteSettings } from "@/sanity/lib/types";
 
-const SERVICE_ITEMS = [
+// TODO: final copy from client — used only when Sanity returns no services
+const FALLBACK_SERVICE_TITLES = [
     "Уборка офисов",
     "Генеральная уборка",
     "Послестроительная уборка",
@@ -19,11 +15,31 @@ const NAV_ITEMS = [
     { label: "Преимущества", href: "#why-us" },
     { label: "Отзывы", href: "#reviews" },
     { label: "FAQ", href: "#faq" },
-    { label: "Контакты", href: "#contacts" },
+    { label: "Контакты", href: "#contact" },
 ];
 
-export function Footer() {
+const COMPANY_FALLBACK = "Название компании";
+
+type Props = {
+    settings?: SiteSettings;
+    services?: Service[];
+};
+
+export function Footer({ settings, services }: Props) {
     const year = new Date().getFullYear();
+    const company = settings?.companyName ?? COMPANY_FALLBACK;
+
+    const contactItems = [
+        settings?.phone ?? "+7 (XXX) XXX-XX-XX",
+        settings?.email ?? "info@example.com",
+        settings?.address ?? "г. Москва, ул. Примерная, д. 1",
+        settings?.workingHours ?? "Пн–Вс: 9:00–21:00",
+    ];
+
+    const serviceTitles =
+        services && services.length > 0
+            ? services.slice(0, 6).map((s) => s.title)
+            : FALLBACK_SERVICE_TITLES;
 
     return (
         <footer className="bg-ink text-white mt-auto">
@@ -31,7 +47,7 @@ export function Footer() {
                 <div>
                     <h3 className="text-base font-semibold mb-4">Контакты</h3>
                     <ul className="space-y-2 text-sm text-white/75">
-                        {CONTACT_ITEMS.map((item) => (
+                        {contactItems.map((item) => (
                             <li key={item}>{item}</li>
                         ))}
                     </ul>
@@ -40,7 +56,7 @@ export function Footer() {
                 <div>
                     <h3 className="text-base font-semibold mb-4">Услуги</h3>
                     <ul className="space-y-2 text-sm text-white/75">
-                        {SERVICE_ITEMS.map((item) => (
+                        {serviceTitles.map((item) => (
                             <li key={item}>{item}</li>
                         ))}
                     </ul>
@@ -64,7 +80,7 @@ export function Footer() {
             </div>
 
             <div className="px-6 py-6 border-t border-white/10 text-xs text-white/60">
-                © {year} Название компании. Все права защищены.
+                © {year} {company}. Все права защищены.
             </div>
         </footer>
     );
