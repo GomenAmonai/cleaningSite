@@ -42,7 +42,6 @@ type Props = {
     title?: string;
     slides?: AboutSlide[];
 };
-
 export function About({ title, slides }: Props) {
     const display: DisplaySlide[] =
         slides && slides.length > 0
@@ -55,10 +54,10 @@ export function About({ title, slides }: Props) {
               }))
             : FALLBACK_SLIDES;
 
-    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start" });
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start", duration: 22 });
     const [selected, setSelected] = useState(0);
     const [canPrev, setCanPrev] = useState(false);
-    const [canNext, setCanNext] = useState(false);
+    const [canNext, setCanNext] = useState(true);
 
     const onSelect = useCallback(() => {
         if (!emblaApi) return;
@@ -69,11 +68,10 @@ export function About({ title, slides }: Props) {
 
     useEffect(() => {
         if (!emblaApi) return;
-        emblaApi.on("init", onSelect);
+        onSelect(); // sync immediately on mount
         emblaApi.on("select", onSelect);
         emblaApi.on("reInit", onSelect);
         return () => {
-            emblaApi.off("init", onSelect);
             emblaApi.off("select", onSelect);
             emblaApi.off("reInit", onSelect);
         };
@@ -95,7 +93,6 @@ export function About({ title, slides }: Props) {
                         aria-hidden="true"
                     />
                     <h2 className="text-3xl md:text-4xl font-semibold text-ink">
-                        {/* TODO: final copy from client (fallback below) */}
                         {title ?? "О компании"}
                     </h2>
                 </div>
@@ -119,7 +116,6 @@ export function About({ title, slides }: Props) {
                                                     sizes="(max-width: 768px) 100vw, 50vw"
                                                 />
                                             ) : (
-                                                /* TODO: replace placeholder div with next/image once Sanity image populated */
                                                 <div
                                                     className={`absolute inset-0 ${slide.placeholderClass ?? "bg-ink/70"}`}
                                                     aria-hidden="true"
@@ -176,7 +172,7 @@ export function About({ title, slides }: Props) {
                             onClick={() => scrollTo(i)}
                             aria-label={`Перейти к слайду ${i + 1}`}
                             aria-current={selected === i}
-                            className={`h-2.5 rounded-full transition-all ${
+                            className={`h-2.5 rounded-full transition-all duration-300 ${
                                 selected === i
                                     ? "w-8 bg-cyan"
                                     : "w-2.5 bg-ink/30 hover:bg-ink/50"

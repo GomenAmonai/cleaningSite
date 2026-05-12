@@ -26,6 +26,7 @@ import {
 } from "@/sanity/lib/queries";
 import type { Service } from "@/sanity/lib/types";
 import { PortableTextRenderer } from "@/components/ui/PortableTextRenderer";
+import { ContactButton } from "@/components/ui/ContactButton";
 
 const ICON_MAP: Record<string, LucideIcon> = {
     Building2,
@@ -106,7 +107,6 @@ export default async function ServicePage({ params }: Props) {
                                     <PortableTextRenderer value={service.longDescription} />
                                 </div>
                             )}
-
                             {service.features && service.features.length > 0 && (
                                 <div>
                                     <h2 className="text-xl font-semibold text-ink mb-5">Что входит в услугу</h2>
@@ -136,22 +136,12 @@ export default async function ServicePage({ params }: Props) {
                                         <p className="text-2xl font-semibold text-cyan">{service.pricing}</p>
                                     </div>
                                 )}
-                                <div className="space-y-3">
-                                    <p className="text-sm text-ink/70">
-                                        Точная стоимость рассчитывается после осмотра объекта. Выезд бесплатный.
-                                    </p>
-                                </div>
-                                <button
-                                    type="button"
-                                    className="w-full bg-cyan text-white font-medium py-3 px-6 rounded-lg hover:bg-cyan/85 transition-colors text-sm"
-                                    onClick={undefined}
-                                    data-open-contact-modal
-                                >
-                                    Оставить заявку
-                                </button>
+                                <p className="text-sm text-ink/70">
+                                    Точная стоимость рассчитывается после осмотра объекта. Выезд бесплатный.
+                                </p>
+                                <ContactButton />
                                 <p className="text-xs text-ink/50 text-center">
                                     Или позвоните:{" "}
-                                    {/* TODO: final copy from client — phone from siteSettings */}
                                     <a href="tel:+74950000000" className="text-cyan hover:underline">
                                         +7 (495) 000-00-00
                                     </a>
