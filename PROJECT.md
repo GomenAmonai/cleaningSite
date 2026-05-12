@@ -80,6 +80,69 @@ Sanity — grep `TODO: final copy from client` for swap points.
   background `bg-cyan-light`. Image slots are coloured placeholder
   divs with TODO comments.
 
+### Block 5 — Contact form + Sanity rewrite
+- **Schemas rewritten.** Old `service` / `siteSettings` removed. New
+  document types under `sanity/schemaTypes/`: `siteSettings` (singleton,
+  one doc with id `siteSettings`), `service`, `aboutSlide`, `whyUsCard`,
+  `faqItem`, `review`, `client`, `inquiry`.
+- **Studio structure** (`sanity/structure.ts`): siteSettings pinned as
+  singleton at top, content lists in the middle, `Заявки` group at the
+  bottom with `Все / Новые / В работе / Закрытые` filters by
+  `status`. Duplicate / delete / unpublish actions for singletons
+  filtered out in `sanity.config.ts`.
+- **Sanity lib** (`sanity/lib/`): `queries.ts` (one GROQ per type),
+  `fetch.ts` (`sanityFetch<T>` with `next.revalidate: 60` ISR; returns
+  `null` on failure so the page never crashes), `writeClient.ts`
+  (server-only client using `SANITY_API_WRITE_TOKEN`, returns `null`
+  if token missing), `types.ts` (TS types per schema).
+- **Section wiring.** Every section accepts props and falls back to
+  hardcoded TODO copy when Sanity returns null/empty. `app/page.tsx`
+  is the single server component fetching all 7 queries in parallel
+  and passing the data down.
+  - Hero: `heroTitle`, `heroSubtitle`, `heroCtaLabel` from siteSettings.
+  - About: `aboutTitle` + `aboutSlide` documents; renders Sanity image
+    when present, falls back to coloured placeholder div otherwise.
+  - Services: `servicesTitle` + `service` docs; `icon` string is mapped
+    to a lucide component via `ICON_MAP` (10 supported names — list is
+    duplicated in the schema's `options.list`).
+  - WhyUs: `whyUsTitle` + `whyUsCard` docs.
+  - Clients: empty state if no docs; otherwise a 2/3/4/5-col logo grid
+    (`next/image` with `cdn.sanity.io` whitelisted in `next.config.ts`).
+  - Reviews: empty state if no docs; otherwise white card grid with
+    optional star rating and author/company.
+  - FAQ: `faqTitle` + `faqItem` docs; markup unchanged from block 4.
+  - Contact: phone / email / address / hours from siteSettings.
+  - Header / Footer: `companyName`, `phone`, plus footer service list
+    from `services` (first 6).
+- **Contact form** (`components/sections/ContactForm.tsx`, client):
+  `react-hook-form` + `zod` (`@hookform/resolvers`). Validates name,
+  Russian phone, optional email, optional message, required consent
+  checkbox. Submits via the `submitInquiry` server action. UI states:
+  idle → submitting → success (success card with reset) / error
+  (inline message with phone fallback).
+- **Server action** (`app/actions/submit-inquiry.ts`): re-validates
+  with the same zod schema (`lib/inquiry-schema.ts`, shared
+  client/server), formats a Telegram HTML message, fires Telegram +
+  Sanity writes via `Promise.allSettled` so neither blocks the other.
+  Telegram delivery and Sanity write are both non-fatal: missing env
+  vars / network errors are logged and the user still sees success.
+  This avoids a misleading error when the primary channel is up.
+- **Env** (`.env.example` committed): `NEXT_PUBLIC_SANITY_PROJECT_ID`,
+  `NEXT_PUBLIC_SANITY_DATASET`, optional `_API_VERSION`,
+  `SANITY_API_WRITE_TOKEN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
+  `.gitignore` updated with `!.env.example` exception.
+- **Seed** (`scripts/seed-sanity.mjs`, plain Node ESM, no extra deps):
+  pre-populates Sanity with the current placeholder copy. Idempotent —
+  uses deterministic `_id`s (`seed.service.offices`, etc.) and
+  `createOrReplace` inside a single transaction. Run via:
+
+      npm run seed
+
+  Requires `NEXT_PUBLIC_SANITY_PROJECT_ID` / `_DATASET` and a write
+  token in `.env.local`. Uses Node's built-in `--env-file` (Node 20+).
+
+Dependencies added: `react-hook-form`, `zod`, `@hookform/resolvers`.
+
 ### Block 4 — Clients + Reviews + FAQ + nav anchors
 - `components/sections/Clients.tsx`: empty-state placeholder on white,
   dashed border container, lucide `Users` icon. Real logos arrive via
@@ -115,9 +178,11 @@ hrefs point at the real IDs.)
   bodies, semi-transparent `bg-white/5` cards.
 
 ### Current page order
-`Header → Hero → About → Services → WhyUs → Clients → Reviews → FAQ → Footer`.
-Contact section comes in block 5 (Sanity wiring).
+`Header → Hero → About → Services → WhyUs → Clients → Reviews → FAQ → Contact → Footer`.
+All sections are wired to Sanity with hardcoded fallbacks for empty
+dataset.
 
 ### Dependencies added during v2
 - `embla-carousel-react` — About carousel
-- `lucide-react` — Services icons
+- `lucide-react` — section icons
+- `react-hook-form`, `zod`, `@hookform/resolvers` — Contact form
