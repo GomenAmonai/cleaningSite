@@ -7,6 +7,7 @@ import { WhyUs } from "@/components/sections/WhyUs";
 import { Clients } from "@/components/sections/Clients";
 import { Reviews } from "@/components/sections/Reviews";
 import { FAQ } from "@/components/sections/FAQ";
+import { Contact } from "@/components/sections/Contact";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import {
     aboutSlidesQuery,
@@ -81,6 +82,10 @@ export default async function Home() {
                 <FAQ
                     title={settings?.faqTitle}
                     items={faqItems ?? undefined}
+                />
+                <Contact
+                    title={settings?.contactTitle}
+                    settings={settings ?? undefined}
                 />
             </main>
             <Footer

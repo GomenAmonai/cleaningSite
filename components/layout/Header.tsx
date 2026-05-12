@@ -1,11 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useContactModal } from "@/components/providers/ModalProvider";
 
-type NavItem =
-    | { label: string; href: string; modal?: false }
-    | { label: string; href?: never; modal: true };
+type NavItem = { label: string; href: string };
 
 const NAV_ITEMS: NavItem[] = [
     { label: "Главная", href: "#hero" },
@@ -14,7 +11,7 @@ const NAV_ITEMS: NavItem[] = [
     { label: "Преимущества", href: "#why-us" },
     { label: "Отзывы", href: "#reviews" },
     { label: "FAQ", href: "#faq" },
-    { label: "Контакты", modal: true },
+    { label: "Контакты", href: "#contact" },
 ];
 
 const COMPANY_FALLBACK = "Название компании";
@@ -27,7 +24,6 @@ type Props = {
 
 export function Header({ companyName, phone }: Props) {
     const [open, setOpen] = useState(false);
-    const { openContactModal } = useContactModal();
 
     const displayCompany = companyName ?? COMPANY_FALLBACK;
     const displayPhone = phone ?? PHONE_FALLBACK;
@@ -46,26 +42,15 @@ export function Header({ companyName, phone }: Props) {
                 </a>
 
                 <nav className="hidden lg:flex items-center gap-6 text-sm font-medium">
-                    {NAV_ITEMS.map((item) =>
-                        item.modal ? (
-                            <button
-                                key="contacts"
-                                type="button"
-                                onClick={openContactModal}
-                                className={navLinkClass}
-                            >
-                                {item.label}
-                            </button>
-                        ) : (
-                            <a
-                                key={item.href}
-                                href={item.href}
-                                className={navLinkClass}
-                            >
-                                {item.label}
-                            </a>
-                        )
-                    )}
+                    {NAV_ITEMS.map((item) => (
+                        <a
+                            key={item.href}
+                            href={item.href}
+                            className={navLinkClass}
+                        >
+                            {item.label}
+                        </a>
+                    ))}
                 </nav>
 
                 <a
@@ -113,27 +98,16 @@ export function Header({ companyName, phone }: Props) {
             {open && (
                 <div className="lg:hidden border-t border-black/5 bg-white">
                     <nav className="flex flex-col px-6 py-4 gap-3 text-sm font-medium">
-                        {NAV_ITEMS.map((item) =>
-                            item.modal ? (
-                                <button
-                                    key="contacts"
-                                    type="button"
-                                    onClick={() => { setOpen(false); openContactModal(); }}
-                                    className="text-ink/80 hover:text-cyan transition-colors py-1 text-left"
-                                >
-                                    {item.label}
-                                </button>
-                            ) : (
-                                <a
-                                    key={item.href}
-                                    href={item.href}
-                                    onClick={() => setOpen(false)}
-                                    className="text-ink/80 hover:text-cyan transition-colors py-1"
-                                >
-                                    {item.label}
-                                </a>
-                            )
-                        )}
+                        {NAV_ITEMS.map((item) => (
+                            <a
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => setOpen(false)}
+                                className="text-ink/80 hover:text-cyan transition-colors py-1"
+                            >
+                                {item.label}
+                            </a>
+                        ))}
                         <a
                             href={telHref}
                             className="md:hidden font-semibold text-ink mt-2"
