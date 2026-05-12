@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
-import { Manrope, Lora } from "next/font/google";
+import { Manrope } from "next/font/google";
+import { ModalProvider } from "@/components/providers/ModalProvider";
 import "./globals.css";
 
 const manrope = Manrope({
-    variable: "--font-inter",
+    variable: "--font-manrope",
     subsets: ["latin", "cyrillic"],
-    display: "swap",
-});
-
-const lora = Lora({
-    variable: "--font-fraunces",
-    subsets: ["latin", "cyrillic"],
+    weight: ["400", "500", "600", "700"],
     display: "swap",
 });
 
@@ -23,18 +19,19 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+    children,
+}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
-        <html
-            lang="ru"
-            className={`${manrope.variable} ${lora.variable} h-full antialiased`}
-        >
-        <body className="min-h-full flex flex-col bg-background text-foreground">
-        {children}
-        </body>
+        <html lang="ru" className={`${manrope.variable} h-full antialiased`}>
+            <body className="min-h-full flex flex-col bg-white text-ink font-sans">
+                <ModalProvider>
+                    <div className="mx-auto w-full max-w-[1280px] flex flex-col min-h-screen">
+                        {children}
+                    </div>
+                </ModalProvider>
+            </body>
         </html>
     );
 }
