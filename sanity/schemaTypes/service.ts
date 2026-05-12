@@ -49,10 +49,51 @@ export const service = defineType({
             initialValue: 0,
         }),
         defineField({
+            name: "slug",
+            title: "Slug (URL)",
+            type: "slug",
+            options: { source: "title", maxLength: 96 },
+            validation: (Rule) => Rule.required(),
+        }),
+        defineField({
             name: "image",
             title: "Изображение (опционально)",
             type: "image",
             options: { hotspot: true },
+        }),
+        defineField({
+            name: "heroImage",
+            title: "Hero-изображение страницы",
+            type: "image",
+            options: { hotspot: true },
+        }),
+        defineField({
+            name: "longDescription",
+            title: "Подробное описание",
+            type: "array",
+            of: [{ type: "block" }],
+        }),
+        defineField({
+            name: "features",
+            title: "Что входит в услугу",
+            type: "array",
+            of: [{ type: "string" }],
+        }),
+        defineField({
+            name: "pricing",
+            title: "Цена / диапазон цен",
+            type: "string",
+        }),
+        defineField({
+            name: "metaTitle",
+            title: "Meta title",
+            type: "string",
+        }),
+        defineField({
+            name: "metaDescription",
+            title: "Meta description",
+            type: "text",
+            rows: 2,
         }),
     ],
     orderings: [
@@ -63,6 +104,6 @@ export const service = defineType({
         },
     ],
     preview: {
-        select: { title: "title", subtitle: "icon" },
+        select: { title: "title", subtitle: "slug.current" },
     },
 });

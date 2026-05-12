@@ -19,7 +19,16 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 }`;
 
 export const servicesQuery = `*[_type == "service"] | order(order asc){
-  _id, title, description, icon, order, image
+  _id, title, description, icon, order, image, "slug": slug.current
+}`;
+
+export const serviceBySlugQuery = `*[_type == "service" && slug.current == $slug][0]{
+  _id, title, description, icon, order, image, "slug": slug.current,
+  heroImage, longDescription, features, pricing, metaTitle, metaDescription
+}`;
+
+export const serviceSlugsQuery = `*[_type == "service" && defined(slug.current)]{
+  "slug": slug.current
 }`;
 
 export const aboutSlidesQuery = `*[_type == "aboutSlide"] | order(order asc){

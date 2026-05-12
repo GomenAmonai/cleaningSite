@@ -20,6 +20,14 @@ export type SiteSettings = {
     contactTitle?: string;
 };
 
+export type PortableTextBlock = {
+    _type: "block";
+    _key: string;
+    style?: string;
+    children: Array<{ _type: "span"; _key: string; text: string; marks?: string[] }>;
+    markDefs?: unknown[];
+};
+
 export type Service = {
     _id: string;
     title: string;
@@ -27,6 +35,13 @@ export type Service = {
     icon: string;
     order?: number;
     image?: SanityImage;
+    slug?: string;
+    heroImage?: SanityImage;
+    longDescription?: PortableTextBlock[];
+    features?: string[];
+    pricing?: string;
+    metaTitle?: string;
+    metaDescription?: string;
 };
 
 export type AboutSlide = {
