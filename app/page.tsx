@@ -10,23 +10,40 @@ import { FAQ } from "@/components/sections/FAQ";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import {
     aboutSlidesQuery,
+    clientsQuery,
+    faqItemsQuery,
+    reviewsQuery,
     servicesQuery,
     siteSettingsQuery,
     whyUsCardsQuery,
 } from "@/sanity/lib/queries";
 import type {
     AboutSlide,
+    Client,
+    FaqItem,
+    Review,
     Service,
     SiteSettings,
     WhyUsCard,
 } from "@/sanity/lib/types";
 
 export default async function Home() {
-    const [settings, aboutSlides, services, whyUsCards] = await Promise.all([
+    const [
+        settings,
+        aboutSlides,
+        services,
+        whyUsCards,
+        clients,
+        reviews,
+        faqItems,
+    ] = await Promise.all([
         sanityFetch<SiteSettings>(siteSettingsQuery),
         sanityFetch<AboutSlide[]>(aboutSlidesQuery),
         sanityFetch<Service[]>(servicesQuery),
         sanityFetch<WhyUsCard[]>(whyUsCardsQuery),
+        sanityFetch<Client[]>(clientsQuery),
+        sanityFetch<Review[]>(reviewsQuery),
+        sanityFetch<FaqItem[]>(faqItemsQuery),
     ]);
 
     return (
@@ -50,9 +67,18 @@ export default async function Home() {
                     title={settings?.whyUsTitle}
                     cards={whyUsCards ?? undefined}
                 />
-                <Clients />
-                <Reviews />
-                <FAQ />
+                <Clients
+                    title={settings?.clientsTitle}
+                    clients={clients ?? undefined}
+                />
+                <Reviews
+                    title={settings?.reviewsTitle}
+                    reviews={reviews ?? undefined}
+                />
+                <FAQ
+                    title={settings?.faqTitle}
+                    items={faqItems ?? undefined}
+                />
             </main>
             <Footer />
         </>
