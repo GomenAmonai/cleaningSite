@@ -178,11 +178,50 @@ hrefs point at the real IDs.)
   bodies, semi-transparent `bg-white/5` cards.
 
 ### Current page order
-`Header → Hero → About → Services → WhyUs → Clients → Reviews → FAQ → Contact → Footer`.
-All sections are wired to Sanity with hardcoded fallbacks for empty
-dataset.
+`Header → Hero → About → Services → WhyUs → Clients → Reviews → FAQ → Footer`.
+`Contact` section removed — replaced by `<dialog>` modal (Block 6).
+All sections are wired to Sanity with hardcoded fallbacks for empty dataset.
+
+### Block 6 — Service pages + Contact modal
+
+#### Part A — Contact modal
+- `components/providers/ModalProvider.tsx` (`"use client"`): React context +
+  `useContactModal()` hook. Holds a `useRef<HTMLDialogElement>`, renders
+  `<ContactModal>` once at root, exposes `openContactModal()` globally.
+- `components/ui/ContactModal.tsx` (`"use client"`): native `<dialog>` with
+  `showModal()`. Backdrop-click closes. Body-scroll locked while open via
+  MutationObserver. Contains `<ContactForm>` in a white card with close button.
+- `app/layout.tsx`: wraps children in `<ModalProvider>`.
+- Hero CTA changed from `<a href="#contact">` to `<button onClick={openContactModal}>`.
+- Header Контакты nav item changed to `<button onClick={openContactModal}>` (desktop
+  and mobile).
+- Footer: added modal CTA button, conditional Telegram/WhatsApp links from
+  siteSettings, service links now `<Link href="/services/[slug]">` when slug is
+  present.
+- `#contact` anchor kept as `<span id="contact">` inside Footer for external deep-links.
+
+#### Part B — Service detail pages
+- **Schema** (`sanity/schemaTypes/service.ts`): added `slug` (required, source title),
+  `heroImage`, `longDescription` (Portable Text), `features[]`, `pricing`,
+  `metaTitle`, `metaDescription`.
+- **Queries** (`sanity/lib/queries.ts`): `serviceBySlugQuery` (by slug param),
+  `serviceSlugsQuery` (for generateStaticParams), `servicesQuery` now projects slug.
+- **Types** (`sanity/lib/types.ts`): `Service` extended with new fields;
+  `PortableTextBlock` type added.
+- **Seed** (`scripts/seed-sanity.mjs`): all 8 services updated with slug, features,
+  pricing, 2-paragraph longDescription. Run `npm run seed`.
+- **`@portabletext/react`** installed.
+- `components/ui/PortableTextRenderer.tsx`: thin wrapper with Tailwind-styled
+  block / list / marks components.
+- `app/services/[slug]/page.tsx`: SSG with `generateStaticParams` + `generateMetadata`.
+  Layout: dark hero (icon + breadcrumb + title + subtitle) / 2-col body (Portable Text
+  + features checklist) + sticky sidebar (pricing, modal CTA, fallback phone) /
+  other-services 4-col grid.
+- `components/sections/Services.tsx`: cards now wrapped in `<Link href="/services/[slug]">`
+  when slug is available, plain `<article>` otherwise.
 
 ### Dependencies added during v2
 - `embla-carousel-react` — About carousel
 - `lucide-react` — section icons
 - `react-hook-form`, `zod`, `@hookform/resolvers` — Contact form
+- `@portabletext/react` — Service detail page long description
