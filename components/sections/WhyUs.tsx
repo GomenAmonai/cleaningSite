@@ -1,44 +1,51 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import type { WhyUsCard as SanityWhyUsCard } from "@/sanity/lib/types";
 
-type Reason = {
+type DisplayReason = {
+    key: string;
     number: string;
     title: string;
     description: string;
 };
 
-// TODO: final copy from client
-const REASONS: Reason[] = [
+// TODO: final copy from client — used only when Sanity returns no cards
+const FALLBACK_REASONS: DisplayReason[] = [
     {
+        key: "01",
         number: "01",
         title: "Договор и документы",
         description:
             "Заключаем официальный договор. Закрывающие документы для бухгалтерии.",
     },
     {
+        key: "02",
         number: "02",
         title: "Фиксированная цена",
         description:
             "Озвучиваем цену на этапе расчёта. Без доплат и пересчётов после уборки.",
     },
     {
+        key: "03",
         number: "03",
         title: "Свой персонал",
         description:
             "Не работаем через субподряд. Все сотрудники в штате, проверены и обучены.",
     },
     {
+        key: "04",
         number: "04",
         title: "Гибкий график",
-        description:
-            "Работаем в удобное вам время — днём, ночью, по выходным.",
+        description: "Работаем в удобное вам время — днём, ночью, по выходным.",
     },
     {
+        key: "05",
         number: "05",
         title: "Профессиональная химия",
         description:
             "Используем сертифицированные средства, безопасные для людей и техники.",
     },
     {
+        key: "06",
         number: "06",
         title: "Гарантия результата",
         description:
@@ -46,22 +53,41 @@ const REASONS: Reason[] = [
     },
 ];
 
-export function WhyUs() {
+type Props = {
+    title?: string;
+    subtitle?: string;
+    cards?: SanityWhyUsCard[];
+};
+
+export function WhyUs({ title, subtitle, cards }: Props) {
+    const display: DisplayReason[] =
+        cards && cards.length > 0
+            ? cards.map((c) => ({
+                  key: c._id,
+                  number: c.number,
+                  title: c.title,
+                  description: c.description ?? "",
+              }))
+            : FALLBACK_REASONS;
+
     return (
         <section id="why-us" className="bg-ink py-20 md:py-28">
             <div className="px-6">
                 <SectionHeading
                     tone="dark"
+                    // TODO: final copy from client (fallback below)
+                    title={title ?? "Почему мы"}
                     // TODO: final copy from client
-                    title="Почему мы"
-                    // TODO: final copy from client
-                    subtitle="Работаем прозрачно и по договору. Без скрытых платежей и сюрпризов."
+                    subtitle={
+                        subtitle ??
+                        "Работаем прозрачно и по договору. Без скрытых платежей и сюрпризов."
+                    }
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    {REASONS.map(({ number, title, description }) => (
+                    {display.map(({ key, number, title, description }) => (
                         <article
-                            key={number}
+                            key={key}
                             className="p-6 md:p-8 bg-white/5 border border-white/10 rounded-lg"
                         >
                             <div className="text-cyan text-4xl font-semibold">
