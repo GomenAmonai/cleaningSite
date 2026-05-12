@@ -2,16 +2,20 @@
 
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import Image from "next/image";
 
-type Slide = {
+import { urlFor } from "@/sanity/lib/image";
+import type { AboutSlide } from "@/sanity/lib/types";
+
+type DisplaySlide = {
     title: string;
     body: string;
-    /** TODO: replace with next/image once /public/placeholders/about-N.jpg lands */
-    placeholderClass: string;
+    imageUrl?: string;
+    placeholderClass?: string;
 };
 
-// TODO: final copy from client
-const SLIDES: Slide[] = [
+// TODO: final copy from client — used only when Sanity returns no slides
+const FALLBACK_SLIDES: DisplaySlide[] = [
     {
         title: "Опыт работы",
         body: "Более 5 лет на рынке клининга. Команда обученных специалистов с опытом работы в крупных бизнес-центрах.",
@@ -34,7 +38,23 @@ const SLIDES: Slide[] = [
     },
 ];
 
-export function About() {
+type Props = {
+    title?: string;
+    slides?: AboutSlide[];
+};
+
+export function About({ title, slides }: Props) {
+    const display: DisplaySlide[] =
+        slides && slides.length > 0
+            ? slides.map((s) => ({
+                  title: s.title,
+                  body: s.body,
+                  imageUrl: s.image
+                      ? urlFor(s.image).width(900).height(700).url()
+                      : undefined,
+              }))
+            : FALLBACK_SLIDES;
+
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start" });
     const [selected, setSelected] = useState(0);
     const [canPrev, setCanPrev] = useState(false);
@@ -74,37 +94,47 @@ export function About() {
                         className="mx-auto h-1 w-12 bg-cyan rounded-full mb-5"
                         aria-hidden="true"
                     />
-                    {/* TODO: final copy from client */}
                     <h2 className="text-3xl md:text-4xl font-semibold text-ink">
-                        О компании
+                        {/* TODO: final copy from client (fallback below) */}
+                        {title ?? "О компании"}
                     </h2>
                 </div>
 
                 <div className="relative">
                     <div className="overflow-hidden" ref={emblaRef}>
                         <div className="flex">
-                            {SLIDES.map((slide, i) => (
+                            {display.map((slide, i) => (
                                 <div
                                     key={i}
                                     className="flex-[0_0_100%] min-w-0 px-1"
                                 >
                                     <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center bg-white rounded-xl overflow-hidden shadow-sm">
-                                        {/* TODO: replace placeholder div with next/image using /public/placeholders/about-{i+1}.jpg */}
-                                        <div
-                                            className={`order-1 md:order-2 aspect-[4/3] md:aspect-auto md:h-full min-h-[260px] ${slide.placeholderClass}`}
-                                            aria-hidden="true"
-                                        />
+                                        <div className="order-1 md:order-2 relative aspect-[4/3] md:aspect-auto md:h-full min-h-[260px]">
+                                            {slide.imageUrl ? (
+                                                <Image
+                                                    src={slide.imageUrl}
+                                                    alt={slide.title}
+                                                    fill
+                                                    className="object-cover"
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                                />
+                                            ) : (
+                                                /* TODO: replace placeholder div with next/image once Sanity image populated */
+                                                <div
+                                                    className={`absolute inset-0 ${slide.placeholderClass ?? "bg-ink/70"}`}
+                                                    aria-hidden="true"
+                                                />
+                                            )}
+                                        </div>
                                         <div className="order-2 md:order-1 p-8 md:p-12">
                                             <div
                                                 className="h-1 w-10 bg-cyan rounded-full mb-5"
                                                 aria-hidden="true"
                                             />
-                                            {/* TODO: final copy from client */}
                                             <h3 className="text-2xl md:text-3xl font-semibold text-ink mb-4">
                                                 {slide.title}
                                             </h3>
-                                            {/* TODO: final copy from client */}
-                                            <p className="text-ink/75 leading-relaxed">
+                                            <p className="text-ink/75 leading-relaxed whitespace-pre-line">
                                                 {slide.body}
                                             </p>
                                         </div>
@@ -139,7 +169,7 @@ export function About() {
                 </div>
 
                 <div className="flex justify-center gap-2 mt-8">
-                    {SLIDES.map((_, i) => (
+                    {display.map((_, i) => (
                         <button
                             key={i}
                             type="button"

@@ -7,14 +7,32 @@ import { WhyUs } from "@/components/sections/WhyUs";
 import { Clients } from "@/components/sections/Clients";
 import { Reviews } from "@/components/sections/Reviews";
 import { FAQ } from "@/components/sections/FAQ";
+import { sanityFetch } from "@/sanity/lib/fetch";
+import {
+    aboutSlidesQuery,
+    siteSettingsQuery,
+} from "@/sanity/lib/queries";
+import type { AboutSlide, SiteSettings } from "@/sanity/lib/types";
 
-export default function Home() {
+export default async function Home() {
+    const [settings, aboutSlides] = await Promise.all([
+        sanityFetch<SiteSettings>(siteSettingsQuery),
+        sanityFetch<AboutSlide[]>(aboutSlidesQuery),
+    ]);
+
     return (
         <>
             <Header />
             <main className="flex-1">
-                <Hero />
-                <About />
+                <Hero
+                    title={settings?.heroTitle}
+                    subtitle={settings?.heroSubtitle}
+                    ctaLabel={settings?.heroCtaLabel}
+                />
+                <About
+                    title={settings?.aboutTitle}
+                    slides={aboutSlides ?? undefined}
+                />
                 <Services />
                 <WhyUs />
                 <Clients />
