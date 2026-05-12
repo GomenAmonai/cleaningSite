@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.24.0",
     "embla-carousel-react": "^8.6.0",
@@ -17,8 +18,10 @@
     "next-sanity": "^12.4.5",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-hook-form": "^7.75.0",
     "sanity": "^5.24.0",
-    "styled-components": "^6.4.1"
+    "styled-components": "^6.4.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
