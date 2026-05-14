@@ -9,6 +9,7 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   heroTitle,
   heroSubtitle,
   heroCtaLabel,
+  heroImage,
   aboutTitle,
   whyUsTitle,
   servicesTitle,

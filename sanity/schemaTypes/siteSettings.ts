@@ -64,6 +64,12 @@ export const siteSettings = defineType({
             initialValue: "Оставить заявку",
         }),
         defineField({
+            name: "heroImage",
+            title: "Hero — Фоновое изображение",
+            type: "image",
+            options: { hotspot: true },
+        }),
+        defineField({
             name: "aboutTitle",
             title: "О компании — Заголовок секции",
             type: "string",

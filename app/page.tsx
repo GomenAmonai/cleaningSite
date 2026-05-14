@@ -58,6 +58,7 @@ export default async function Home() {
                     title={settings?.heroTitle}
                     subtitle={settings?.heroSubtitle}
                     ctaLabel={settings?.heroCtaLabel}
+                    heroImage={settings?.heroImage}
                 />
                 <About
                     title={settings?.aboutTitle}

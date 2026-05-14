@@ -1,27 +1,46 @@
 "use client";
 
+import Image from "next/image";
 import { useContactModal } from "@/components/providers/ModalProvider";
+import { urlFor } from "@/sanity/lib/image";
+import type { SiteSettings } from "@/sanity/lib/types";
 
 type Props = {
     title?: string;
     subtitle?: string;
     ctaLabel?: string;
+    heroImage?: SiteSettings["heroImage"];
 };
 
-export function Hero({ title, subtitle, ctaLabel }: Props) {
+export function Hero({ title, subtitle, ctaLabel, heroImage }: Props) {
     const { openContactModal } = useContactModal();
+
+    const imageSrc = heroImage
+        ? urlFor(heroImage).width(1920).quality(80).url()
+        : "/hero.jpg";
 
     return (
         <section
             id="hero"
             className="relative isolate min-h-[500px] md:min-h-[600px] flex items-center"
         >
-            {/* TODO: replace with next/image using /public/placeholders/hero.jpg once real asset lands */}
-            <div className="absolute inset-0 -z-10 bg-ink" aria-hidden="true" />
-            <div
-                className="absolute inset-0 -z-10 bg-gradient-to-b from-ink/70 to-ink/30"
-                aria-hidden="true"
-            />
+            {/* Fallback solid bg — visible until image loads or when no image exists */}
+            <div className="absolute inset-0 -z-30 bg-ink" aria-hidden="true" />
+
+            {/* Background image — Sanity heroImage or /public/hero.jpg */}
+            <div className="absolute inset-0 -z-20 overflow-hidden">
+                <Image
+                    src={imageSrc}
+                    alt=""
+                    fill
+                    priority
+                    className="object-cover object-center"
+                    aria-hidden="true"
+                />
+            </div>
+
+            {/* Dark overlay — bg-black/[.52] ≈ rgba(0,0,0,0.52), keeps white text ≥ 4.5:1 WCAG AA */}
+            <div className="absolute inset-0 -z-10 bg-black/[.52]" aria-hidden="true" />
 
             <div className="w-full px-6 py-20 md:py-28">
                 <div className="max-w-3xl mx-auto text-center text-white">
