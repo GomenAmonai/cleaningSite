@@ -103,26 +103,22 @@ export function Footer({ settings, services }: Props) {
                 <div>
                     <h3 className="text-base font-semibold mb-4">Услуги</h3>
                     <ul className="space-y-2 text-sm text-white/75">
-                        {serviceList.map((item) => {
-                            const title = typeof item === "string" ? item : item.title;
-                            const slug = typeof item === "string" ? undefined : (item as Service).slug;
-                            return (
-                                <li key={title}>
-                                    {slug ? (
-                                        <Link
-                                            href={`/services/${slug}`}
-                                            className="hover:text-white transition-colors"
-                                        >
-                                            {title}
-                                        </Link>
-                                    ) : (
-                                        <a href="/#services" className="hover:text-white transition-colors">
-                                            {title}
-                                        </a>
-                                    )}
-                                </li>
-                            );
-                        })}
+                        {serviceList.map((item) => (
+                            <li key={item.title}>
+                                {item.slug ? (
+                                    <Link
+                                        href={`/services/${item.slug}`}
+                                        className="hover:text-white transition-colors"
+                                    >
+                                        {item.title}
+                                    </Link>
+                                ) : (
+                                    <a href="/#services" className="hover:text-white transition-colors">
+                                        {item.title}
+                                    </a>
+                                )}
+                            </li>
+                        ))}
                     </ul>
                 </div>
 

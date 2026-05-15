@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useContactModal } from "@/components/providers/ModalProvider";
 
 type NavItem = { label: string; href: string };
 
@@ -11,7 +12,6 @@ const NAV_ITEMS: NavItem[] = [
     { label: "Преимущества", href: "#why-us" },
     { label: "Отзывы", href: "#reviews" },
     { label: "FAQ", href: "#faq" },
-    { label: "Контакты", href: "#contact" },
 ];
 
 const COMPANY_FALLBACK = "Название компании";
@@ -24,6 +24,7 @@ type Props = {
 
 export function Header({ companyName, phone }: Props) {
     const [open, setOpen] = useState(false);
+    const { openContactModal } = useContactModal();
 
     const displayCompany = companyName ?? COMPANY_FALLBACK;
     const displayPhone = phone ?? PHONE_FALLBACK;
@@ -51,6 +52,13 @@ export function Header({ companyName, phone }: Props) {
                             {item.label}
                         </a>
                     ))}
+                    <button
+                        type="button"
+                        onClick={openContactModal}
+                        className={navLinkClass}
+                    >
+                        Контакты
+                    </button>
                 </nav>
 
                 <a
@@ -108,6 +116,13 @@ export function Header({ companyName, phone }: Props) {
                                 {item.label}
                             </a>
                         ))}
+                        <button
+                            type="button"
+                            onClick={() => { setOpen(false); openContactModal(); }}
+                            className="text-ink/80 hover:text-cyan transition-colors py-1 text-left"
+                        >
+                            Контакты
+                        </button>
                         <a
                             href={telHref}
                             className="md:hidden font-semibold text-ink mt-2"

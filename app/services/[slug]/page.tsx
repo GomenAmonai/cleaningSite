@@ -18,13 +18,16 @@ import {
 } from "lucide-react";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 import { sanityFetch } from "@/sanity/lib/fetch";
 import {
     serviceBySlugQuery,
     serviceSlugsQuery,
     servicesQuery,
+    siteSettingsQuery,
 } from "@/sanity/lib/queries";
-import type { Service } from "@/sanity/lib/types";
+import type { Service, SiteSettings } from "@/sanity/lib/types";
 import { PortableTextRenderer } from "@/components/ui/PortableTextRenderer";
 import { ContactButton } from "@/components/ui/ContactButton";
 
@@ -60,15 +63,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ServicePage({ params }: Props) {
     const { slug } = await params;
-    const [service, allServices] = await Promise.all([
+    const [service, allServices, settings] = await Promise.all([
         sanityFetch<Service>(serviceBySlugQuery, { slug }),
         sanityFetch<Service[]>(servicesQuery),
+        sanityFetch<SiteSettings>(siteSettingsQuery),
     ]);
 
     if (!service) notFound();
 
     const Icon = ICON_MAP[service.icon] ?? HelpCircle;
     const otherServices = (allServices ?? []).filter((s) => s.slug !== slug).slice(0, 4);
+    const phone = settings?.phone ?? "+7 (495) 000-00-00";
+    const telHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
 
     return (
         <>
@@ -142,8 +148,8 @@ export default async function ServicePage({ params }: Props) {
                                 <ContactButton />
                                 <p className="text-xs text-ink/50 text-center">
                                     Или позвоните:{" "}
-                                    <a href="tel:+74950000000" className="text-cyan hover:underline">
-                                        +7 (495) 000-00-00
+                                    <a href={telHref} className="text-cyan hover:underline">
+                                        {phone}
                                     </a>
                                 </p>
                             </div>
