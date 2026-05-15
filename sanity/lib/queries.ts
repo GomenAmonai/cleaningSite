@@ -1,4 +1,4 @@
-export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
+export const siteSettingsQuery = `*[_id == "siteSettings"][0]{
   companyName,
   phone,
   email,
