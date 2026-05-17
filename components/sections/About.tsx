@@ -11,7 +11,8 @@ type DisplaySlide = {
     title: string;
     body: string;
     imageUrl?: string;
-    placeholderClass?: string;
+    stat?: string;
+    statLabel?: string;
 };
 
 // TODO: final copy from client — used only when Sanity returns no slides
@@ -19,22 +20,26 @@ const FALLBACK_SLIDES: DisplaySlide[] = [
     {
         title: "Опыт работы",
         body: "Более 5 лет на рынке клининга. Команда обученных специалистов с опытом работы в крупных бизнес-центрах.",
-        placeholderClass: "bg-ink/80",
+        stat: "5+",
+        statLabel: "лет на рынке",
     },
     {
         title: "Современное оборудование",
         body: "Профессиональная техника и сертифицированная химия. Безопасно для сотрудников и посетителей.",
-        placeholderClass: "bg-cyan/70",
+        stat: "100%",
+        statLabel: "сертифицированная химия",
     },
     {
         title: "Гибкий график",
         body: "Работаем в удобное для вас время — днём, ночью, по выходным. Не мешаем рабочему процессу.",
-        placeholderClass: "bg-ink/70",
+        stat: "24/7",
+        statLabel: "без выходных",
     },
     {
         title: "Договор и отчётность",
         body: "Официальный договор, закрывающие документы, прозрачная цена. Без скрытых платежей.",
-        placeholderClass: "bg-cyan/60",
+        stat: "0 ₽",
+        statLabel: "скрытых платежей",
     },
 ];
 
@@ -116,10 +121,16 @@ export function About({ title, slides }: Props) {
                                                     sizes="(max-width: 768px) 100vw, 50vw"
                                                 />
                                             ) : (
-                                                <div
-                                                    className={`absolute inset-0 ${slide.placeholderClass ?? "bg-ink/70"}`}
-                                                    aria-hidden="true"
-                                                />
+                                                <div className="absolute inset-0 bg-ink flex flex-col items-center justify-center gap-3" aria-hidden="true">
+                                                    <span className="text-6xl md:text-7xl font-semibold text-cyan leading-none">
+                                                        {slide.stat ?? ""}
+                                                    </span>
+                                                    {slide.statLabel && (
+                                                        <span className="text-sm md:text-base text-white/60 tracking-wide uppercase">
+                                                            {slide.statLabel}
+                                                        </span>
+                                                    )}
+                                                </div>
                                             )}
                                         </div>
                                         <div className="order-2 md:order-1 p-8 md:p-12">
