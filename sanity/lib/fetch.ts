@@ -29,6 +29,7 @@ export async function sanityFetch<T>(query: string, params: Record<string, unkno
     try {
         return await readClient.fetch<T>(query, params, {
             next: { revalidate: 60 },
+            signal: AbortSignal.timeout(8000),
         });
     } catch (err) {
         console.error("[sanityFetch] failed:", err);
