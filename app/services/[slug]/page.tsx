@@ -21,8 +21,6 @@ import {
 } from "lucide-react";
 import type { Metadata } from "next";
 
-export const revalidate = 60;
-
 import { sanityFetch } from "@/sanity/lib/fetch";
 import {
     serviceBySlugQuery,

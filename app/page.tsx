@@ -10,7 +10,6 @@ import { Clients } from "@/components/sections/Clients";
 import { Reviews } from "@/components/sections/Reviews";
 import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
-export const revalidate = 60;
 
 import { sanityFetch } from "@/sanity/lib/fetch";
 import {
