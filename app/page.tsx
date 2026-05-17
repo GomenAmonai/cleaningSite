@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
@@ -58,6 +60,7 @@ export default async function Home() {
                     title={settings?.heroTitle}
                     subtitle={settings?.heroSubtitle}
                     ctaLabel={settings?.heroCtaLabel}
+                    heroImage={settings?.heroImage}
                 />
                 <About
                     title={settings?.aboutTitle}

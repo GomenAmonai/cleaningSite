@@ -38,13 +38,15 @@ export const siteSettings = defineType({
         }),
         defineField({
             name: "telegram",
-            title: "Telegram (ссылка)",
-            type: "url",
+            title: "Telegram (username или @username)",
+            type: "string",
+            description: 'Например: mycompany или @mycompany',
         }),
         defineField({
             name: "whatsapp",
-            title: "WhatsApp (ссылка)",
-            type: "url",
+            title: "WhatsApp (номер телефона)",
+            type: "string",
+            description: 'Например: +79991234567',
         }),
         defineField({
             name: "heroTitle",
@@ -62,6 +64,12 @@ export const siteSettings = defineType({
             title: "Hero — Текст кнопки",
             type: "string",
             initialValue: "Оставить заявку",
+        }),
+        defineField({
+            name: "heroImage",
+            title: "Hero — Фоновое изображение",
+            type: "image",
+            options: { hotspot: true },
         }),
         defineField({
             name: "aboutTitle",

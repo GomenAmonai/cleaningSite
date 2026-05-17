@@ -11,6 +11,7 @@ export type SiteSettings = {
     heroTitle?: string;
     heroSubtitle?: string;
     heroCtaLabel?: string;
+    heroImage?: SanityImage;
     aboutTitle?: string;
     whyUsTitle?: string;
     servicesTitle?: string;
