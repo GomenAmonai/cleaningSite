@@ -50,12 +50,14 @@ type Props = {
 export function About({ title, slides }: Props) {
     const display: DisplaySlide[] =
         slides && slides.length > 0
-            ? slides.map((s) => ({
+            ? slides.map((s, i) => ({
                   title: s.title,
                   body: s.body,
                   imageUrl: s.image
                       ? urlFor(s.image).width(900).height(700).url()
                       : undefined,
+                  stat: FALLBACK_SLIDES[i]?.stat,
+                  statLabel: FALLBACK_SLIDES[i]?.statLabel,
               }))
             : FALLBACK_SLIDES;
 
