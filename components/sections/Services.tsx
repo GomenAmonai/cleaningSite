@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
     Building2,
     Droplets,
@@ -16,7 +15,6 @@ import {
 } from "lucide-react";
 
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { urlFor } from "@/sanity/lib/image";
 import type { Service as SanityService } from "@/sanity/lib/types";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -38,7 +36,6 @@ type DisplayService = {
     title: string;
     description: string;
     slug?: string;
-    imageUrl?: string;
 };
 
 // TODO: final copy from client — used only when Sanity returns no services
@@ -116,9 +113,6 @@ export function Services({ title, subtitle, services }: Props) {
                   title: s.title,
                   description: s.description ?? "",
                   slug: s.slug,
-                  imageUrl: s.image
-                      ? urlFor(s.image).width(800).quality(80).url()
-                      : undefined,
               }))
             : FALLBACK_SERVICES;
 
@@ -136,30 +130,16 @@ export function Services({ title, subtitle, services }: Props) {
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8">
-                    {display.map(({ key, icon: Icon, title, description, slug, imageUrl }) => {
+                    {display.map(({ key, icon: Icon, title, description, slug }) => {
                         const inner = (
                             <>
-                                {imageUrl ? (
-                                    <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-ink/5">
-                                        <Image
-                                            src={imageUrl}
-                                            alt={title}
-                                            fill
-                                            sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
-                                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center justify-center aspect-[16/10] rounded-md bg-cyan-light">
-                                        <Icon
-                                            className="text-cyan"
-                                            size={56}
-                                            strokeWidth={1.25}
-                                            aria-hidden="true"
-                                        />
-                                    </div>
-                                )}
-                                <h3 className="mt-5 text-lg font-semibold text-ink group-hover:text-cyan transition-colors">
+                                <Icon
+                                    className="text-cyan"
+                                    size={44}
+                                    strokeWidth={1.5}
+                                    aria-hidden="true"
+                                />
+                                <h3 className="mt-5 text-lg font-semibold text-ink">
                                     {title}
                                 </h3>
                                 <p className="mt-2 text-sm text-ink/70 leading-relaxed">
@@ -167,8 +147,7 @@ export function Services({ title, subtitle, services }: Props) {
                                 </p>
                             </>
                         );
-                        const cardClass =
-                            "group bg-white border border-ink/10 rounded-lg p-4 md:p-5 hover:border-cyan transition-colors block";
+                        const cardClass = "p-6 md:p-8 bg-white border border-ink/10 rounded-lg hover:border-cyan transition-colors block";
                         return slug ? (
                             <Link key={key} href={`/services/${slug}`} className={cardClass}>
                                 {inner}

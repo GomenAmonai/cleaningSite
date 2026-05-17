@@ -30,6 +30,7 @@ import {
     servicesQuery,
     siteSettingsQuery,
 } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 import type { Service, SiteSettings } from "@/sanity/lib/types";
 import { PortableTextRenderer } from "@/components/ui/PortableTextRenderer";
 import { ContactButton } from "@/components/ui/ContactButton";
@@ -84,7 +85,11 @@ export default async function ServicePage({ params }: Props) {
             {/* Hero */}
             <section className="relative isolate bg-ink text-white py-16 md:py-24 overflow-hidden">
                 <Image
-                    src={`/services/${slug}.jpg`}
+                    src={
+                        service.heroImage
+                            ? urlFor(service.heroImage).width(1920).height(800).fit("max").url()
+                            : `/services/${slug}.jpg`
+                    }
                     alt=""
                     fill
                     priority
