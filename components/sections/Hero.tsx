@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+
 import { useContactModal } from "@/components/providers/ModalProvider";
 import { urlFor } from "@/sanity/lib/image";
 import type { SiteSettings } from "@/sanity/lib/types";
@@ -14,7 +15,6 @@ type Props = {
 
 export function Hero({ title, subtitle, ctaLabel, heroImage }: Props) {
     const { openContactModal } = useContactModal();
-
     const imageSrc = heroImage
         ? urlFor(heroImage).width(1920).quality(80).url()
         : "/hero.jpg";
@@ -24,7 +24,7 @@ export function Hero({ title, subtitle, ctaLabel, heroImage }: Props) {
             id="hero"
             className="relative isolate min-h-[500px] md:min-h-[600px] flex items-center"
         >
-            {/* Fallback solid bg — visible until image loads or when no image exists */}
+            {/* Solid fallback — visible before image loads */}
             <div className="absolute inset-0 -z-30 bg-ink" aria-hidden="true" />
 
             {/* Background image — Sanity heroImage or /public/hero.jpg */}
@@ -39,7 +39,7 @@ export function Hero({ title, subtitle, ctaLabel, heroImage }: Props) {
                 />
             </div>
 
-            {/* Dark overlay — bg-black/[.52] ≈ rgba(0,0,0,0.52), keeps white text ≥ 4.5:1 WCAG AA */}
+            {/* Dark overlay — bg-black/[.52] keeps white text ≥ 4.5:1 WCAG AA */}
             <div className="absolute inset-0 -z-10 bg-black/[.52]" aria-hidden="true" />
 
             <div className="w-full px-6 py-20 md:py-28">

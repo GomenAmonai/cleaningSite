@@ -2,6 +2,7 @@ export const revalidate = 60;
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
     Building2,
     Droplets,
@@ -81,7 +82,16 @@ export default async function ServicePage({ params }: Props) {
     return (
         <>
             {/* Hero */}
-            <section className="bg-ink text-white py-16 md:py-24">
+            <section className="relative isolate bg-ink text-white py-16 md:py-24 overflow-hidden">
+                <Image
+                    src={`/services/${slug}.jpg`}
+                    alt=""
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="absolute inset-0 -z-20 object-cover opacity-40"
+                />
+                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-ink/50" aria-hidden="true" />
                 <div className="px-6 max-w-[1280px] mx-auto">
                     <nav className="flex items-center gap-2 text-sm text-white/50 mb-8" aria-label="Breadcrumb">
                         <Link href="/" className="hover:text-white transition-colors">Главная</Link>
