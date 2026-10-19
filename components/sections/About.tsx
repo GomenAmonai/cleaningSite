@@ -11,35 +11,25 @@ type DisplaySlide = {
     title: string;
     body: string;
     imageUrl?: string;
-    stat?: string;
-    statLabel?: string;
 };
 
 // TODO: final copy from client — used only when Sanity returns no slides
 const FALLBACK_SLIDES: DisplaySlide[] = [
     {
         title: "Опыт работы",
-        body: "Более 5 лет на рынке клининга. Команда обученных специалистов с опытом работы в крупных бизнес-центрах.",
-        stat: "5+",
-        statLabel: "лет на рынке",
+        body: "Команда обученных специалистов с опытом работы в бизнес-центрах.",
     },
     {
         title: "Современное оборудование",
         body: "Профессиональная техника и сертифицированная химия. Безопасно для сотрудников и посетителей.",
-        stat: "100%",
-        statLabel: "сертифицированная химия",
     },
     {
         title: "Гибкий график",
         body: "Работаем в удобное для вас время — днём, ночью, по выходным. Не мешаем рабочему процессу.",
-        stat: "24/7",
-        statLabel: "без выходных",
     },
     {
         title: "Договор и отчётность",
         body: "Официальный договор, закрывающие документы, прозрачная цена. Без скрытых платежей.",
-        stat: "0 ₽",
-        statLabel: "скрытых платежей",
     },
 ];
 
@@ -50,14 +40,12 @@ type Props = {
 export function About({ title, slides }: Props) {
     const display: DisplaySlide[] =
         slides && slides.length > 0
-            ? slides.map((s, i) => ({
+            ? slides.map((s) => ({
                   title: s.title,
                   body: s.body,
                   imageUrl: s.image
                       ? urlFor(s.image).width(900).height(700).url()
                       : undefined,
-                  stat: FALLBACK_SLIDES[i]?.stat,
-                  statLabel: FALLBACK_SLIDES[i]?.statLabel,
               }))
             : FALLBACK_SLIDES;
 
@@ -123,15 +111,10 @@ export function About({ title, slides }: Props) {
                                                     sizes="(max-width: 768px) 100vw, 50vw"
                                                 />
                                             ) : (
-                                                <div className="absolute inset-0 bg-ink flex flex-col items-center justify-center gap-3" aria-hidden="true">
+                                                <div className="absolute inset-0 bg-ink flex items-center justify-center" aria-hidden="true">
                                                     <span className="text-6xl md:text-7xl font-semibold text-cyan leading-none">
-                                                        {slide.stat ?? ""}
+                                                        {String(i + 1).padStart(2, "0")}
                                                     </span>
-                                                    {slide.statLabel && (
-                                                        <span className="text-sm md:text-base text-white/60 tracking-wide uppercase">
-                                                            {slide.statLabel}
-                                                        </span>
-                                                    )}
                                                 </div>
                                             )}
                                         </div>

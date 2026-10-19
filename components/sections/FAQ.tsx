@@ -61,7 +61,7 @@ export function FAQ({ title, subtitle, items }: Props) {
                     title={title ?? "Частые вопросы"}
                     // TODO: final copy from client
                     subtitle={
-                        subtitle ?? "Ответы на вопросы которые задают чаще всего."
+                        subtitle ?? "Ответы на вопросы, которые задают чаще всего."
                     }
                 />
 
