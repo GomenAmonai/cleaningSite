@@ -13,6 +13,7 @@ type Props = {
 
 export function Clients({ title, subtitle, clients }: Props) {
     const hasClients = clients && clients.length > 0;
+    if (!hasClients) return null;
 
     return (
         <section id="clients" className="bg-white py-20 md:py-28">

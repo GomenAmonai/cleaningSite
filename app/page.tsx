@@ -50,11 +50,14 @@ export default async function Home() {
         sanityFetch<FaqItem[]>(faqItemsQuery),
     ]);
 
+    const hasReviews = (reviews?.length ?? 0) > 0;
+
     return (
         <>
             <Header
                 companyName={settings?.companyName}
                 phone={settings?.phone}
+                showReviews={hasReviews}
             />
             <main className="flex-1">
                 <Hero
@@ -95,6 +98,7 @@ export default async function Home() {
             <Footer
                 settings={settings ?? undefined}
                 services={services ?? undefined}
+                showReviews={hasReviews}
             />
         </>
     );

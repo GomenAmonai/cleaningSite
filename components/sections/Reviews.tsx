@@ -11,6 +11,7 @@ type Props = {
 
 export function Reviews({ title, subtitle, reviews }: Props) {
     const hasReviews = reviews && reviews.length > 0;
+    if (!hasReviews) return null;
 
     return (
         <section id="reviews" className="bg-cyan-light py-20 md:py-28">

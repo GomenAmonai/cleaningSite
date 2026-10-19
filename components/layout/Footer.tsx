@@ -26,9 +26,11 @@ const COMPANY_FALLBACK = "Название компании";
 type Props = {
     settings?: SiteSettings;
     services?: Service[];
+    showReviews?: boolean;
 };
 
-export function Footer({ settings, services }: Props) {
+export function Footer({ settings, services, showReviews = false }: Props) {
+    const navItems = NAV_ITEMS.filter((item) => showReviews || item.href !== "#reviews");
     const year = new Date().getFullYear();
     const company = settings?.companyName ?? COMPANY_FALLBACK;
     const { openContactModal } = useContactModal();
@@ -38,7 +40,7 @@ export function Footer({ settings, services }: Props) {
 
     const serviceList =
         services && services.length > 0
-            ? services.slice(0, 6)
+            ? services
             : FALLBACK_SERVICE_TITLES.map((title) => ({ title, slug: undefined }));
 
     return (
@@ -126,7 +128,7 @@ export function Footer({ settings, services }: Props) {
                 <div>
                     <h3 className="text-base font-semibold mb-4">Навигация</h3>
                     <ul className="space-y-2 text-sm text-white/75">
-                        {NAV_ITEMS.map((item) => (
+                        {navItems.map((item) => (
                             <li key={item.href}>
                                 <a
                                     href={item.href}
@@ -148,9 +150,6 @@ export function Footer({ settings, services }: Props) {
                     </ul>
                 </div>
             </div>
-
-            {/* #contact anchor kept for external deep-links */}
-            <span id="contact" aria-hidden="true" />
 
             <div className="px-6 py-6 border-t border-white/10 text-xs text-white/60">
                 © {year} {company}. Все права защищены.

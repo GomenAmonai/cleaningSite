@@ -20,9 +20,11 @@ const PHONE_FALLBACK = "+7 (XXX) XXX-XX-XX";
 type Props = {
     companyName?: string;
     phone?: string;
+    showReviews?: boolean;
 };
 
-export function Header({ companyName, phone }: Props) {
+export function Header({ companyName, phone, showReviews = false }: Props) {
+    const navItems = NAV_ITEMS.filter((item) => showReviews || item.href !== "#reviews");
     const [open, setOpen] = useState(false);
     const { openContactModal } = useContactModal();
 
@@ -43,7 +45,7 @@ export function Header({ companyName, phone }: Props) {
                 </a>
 
                 <nav className="hidden lg:flex items-center gap-6 text-sm font-medium">
-                    {NAV_ITEMS.map((item) => (
+                    {navItems.map((item) => (
                         <a
                             key={item.href}
                             href={item.href}
@@ -106,7 +108,7 @@ export function Header({ companyName, phone }: Props) {
             {open && (
                 <div className="lg:hidden border-t border-black/5 bg-white">
                     <nav className="flex flex-col px-6 py-4 gap-3 text-sm font-medium">
-                        {NAV_ITEMS.map((item) => (
+                        {navItems.map((item) => (
                             <a
                                 key={item.href}
                                 href={item.href}
